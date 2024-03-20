@@ -15,14 +15,10 @@
  */
 #include QMK_KEYBOARD_H
 
-//#include "keymap_steno.h"
-
-
 // Defines names for use in layer keycodes and the keymap
 enum layer_names {
     _QWERTY,
     _NUMPAD,
-    _CURSORRGHT,
     _CURSORLEFT,
     _NUMBERS,
     _EXTRARIGHT
@@ -32,9 +28,7 @@ enum layer_names {
 enum custom_keycodes {
     QWERTY = SAFE_RANGE,
     NUMPAD,
-    // These three wiil work as RAISE, LOWER  and ADJUST in the original PLANCK
-    CURSORRGHT = LT(_CURSORRGHT,KC_SPC),
-    CURSORLEFT = LT(_CURSORLEFT,KC_SPC),
+    CURSORLEFT = LT(_CURSORLEFT,KC_ESC),
     NUMBERS
 };
 
@@ -55,19 +49,19 @@ Hold:
  * +------+------+------+------+------+------++------+------+------+------+------+------+
 		 |  GUI | Alt  |      |      ||      |      | RAlt | Menu |
 	      |  +------+------+      |      ||      |      +------+------+   |
-Hold:  	      |	               | LSft |CursLt||CursRt| RSft |                 |
-Single hit:   |		       |      |Space ||Space |      |                 |
+Hold:  	      |	           | LSft |CursLt||      | RSft |                 |
+Single hit:   |		       |      | Space ||Space |      |                 |
               |                +------+------||------+------+                 |
-              +------>                | Space||Space |              <---------+
+              +------>                | Esc  || BSp  |              <---------+
                                       +------||------+
 
  */
 [_QWERTY] = LAYOUT_ortho_5x12( \
-  KC_GRV,                  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,       KC_7,    KC_8,    KC_9,   KC_0,    KC_DEL,  \
+  KC_GRV,                  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,       KC_7,    KC_8,    KC_9,   KC_0,    TG(_NUMPAD),  \
   KC_ESC,                  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,       KC_U,    KC_I,    KC_O,   KC_P,    KC_BSPC, \
   LT(_EXTRARIGHT,KC_TAB),  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,       KC_J,    KC_K,    KC_L,   KC_SCLN, KC_ENT,  \
   KC_LCTL,                 KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,       KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RCTL, \
-                 	   	    KC_LGUI, KC_LALT, KC_LSFT, CURSORLEFT, KC_ESC,  KC_BSPC,  CURSORRGHT, KC_RSFT, KC_RALT, KC_APP                    \
+                 	   	    KC_LGUI, KC_LALT, KC_LSFT, CURSORLEFT, KC_BSPC,  KC_ENT,  KC_SPC, KC_RSFT, KC_RALT, KC_APP                    \
 ),
 
 
@@ -103,27 +97,6 @@ For the same reason the keymaps below are shown simplified,
 without separate thumbcluster.
 
 */
-
-
-
-/* Cursor Control on the right (Right Space)
- * ,-----------------------------------------------------------------------------------.
- * | Esc  |Break |WheelD|MousUp|WheelU| Del  |  Ins | Home |  Up  | End  |   `  | Del  |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |SelAll|MousLt|MousDn|MousRt| ...  | PgUp | Left | Down |Right | ...  |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      | Undo | Cut  | Copy | Paste| ...  | PgDn |MsBtLe|MsBtMi|MsBtRt| ...  |      |
- * `------+------+------+------+------+------+------+------+------+------+------+------.
- *               |      |      |      |      |   X  |      |      |      |
- *               `-------------------------------------------------------'
- */
-[_CURSORRGHT] = LAYOUT_ortho_5x12( \
-  _______, _______,          _______,      _______,      _______,      _______,             _______,  _______, _______, _______, _______, _______, \
-  _______, KC_BRK,           KC_WH_D,      KC_MS_U,      KC_WH_U,      KC_DEL,              KC_PGUP,  KC_HOME, KC_UP,   KC_END,  KC_GRV,  KC_DEL, \
-  KC_ENT,  LCTL(KC_A),       KC_MS_L,      KC_MS_D,      KC_MS_R,      XXXXXXX,             KC_PGDN,  KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, _______, \
-  _______, LCTL(KC_Z),       LSFT(KC_DEL), LCTL(KC_INS), LSFT(KC_INS), XXXXXXX,             KC_INS,   KC_BTN1, KC_BTN3, KC_BTN2, XXXXXXX, _______, \
-    	    		     _______,      _______,      _______,      _______, _______, _______,  _______, _______, _______, _______           \
-),
 
 
 
@@ -170,23 +143,23 @@ without separate thumbcluster.
 
 /* ExtraRightSide (the keys from the right side which did not fit into the matrix)
  * ,-----------------------------------------------------------------------------------.
- * | Esc  |BREAK |      |      |      |      |   `  |   =  |   (  |   )  |   -  |      |
+ * | Esc  |BREAK |      |      |      |      |   `  |   =  |   \  |   '  |   -  |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |******|      |      |      |      |      |      |      |      |      |  '   |      |
+ * |******|      |      |      |      |      |  (   |   [  |  ]   |  )   |      |      |
    This is the
    key turning
    this layer on
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |NUMPAD|      |      |      |      |   [  |   ]  |  \   |      |
+ * |      |      |      |NUMPAD|      |      |      |      |      |      |      |      |
  * `------+------+------+------+------+------+------+------+------+------+------+------.
  *               |      |      |      |      |      |      |      |      |
  *               `-------------------------------------------------------'
  */
 [_EXTRARIGHT] = LAYOUT_ortho_5x12( \
   _______, _______, _______, _______, _______, 	_______,       _______, _______, _______,      _______,      _______, _______, \
-  _______, KC_BRK,  XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,       KC_GRV,  KC_EQL,  KC_LPRN, KC_RPRN, KC_MINS, _______, \
-  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_QUOT, _______, \
-  _______, XXXXXXX, XXXXXXX, TG(_NUMPAD), XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, KC_LBRC, KC_RBRC, KC_BSLS, _______, \
+  _______, KC_BRK,  XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,       KC_GRV,  KC_EQL,  KC_BSLS, KC_QUOT, KC_MINS, _______, \
+  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,       KC_LPRN, KC_LBRC, KC_RBRC, KC_RPRN, XXXXXXX, _______, \
+  _______, XXXXXXX, XXXXXXX, TG(_NUMPAD), XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
     	    		     _______,      _______,      _______,      _______, _______, _______,  _______, _______, _______, _______           \
 
 ),
@@ -210,10 +183,10 @@ Single hit:		       |      |Space ||Space |      |
  */
 [_NUMPAD] =  LAYOUT_ortho_5x12( \
   _______, _______, _______, _______, _______, 	_______,       _______, _______, _______,      _______,      _______, _______, \
-  KC_ESC,                 XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_KP_SLASH, KC_7,    KC_8, KC_9, KC_KP_MINUS, KC_BSPC, \
+  KC_ESC,                 XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_KP_SLASH, KC_7,    KC_8, KC_9, KC_KP_MINUS, TG(_NUMPAD), \
   LT(_EXTRARIGHT,KC_TAB), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_PAST,     KC_4,    KC_5, KC_6, KC_KP_PLUS,  KC_PENT, \
   KC_LCTL,                XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_COMM,     KC_1,    KC_2, KC_3, KC_DOT,      KC_RCTL, \
-               KC_LGUI, KC_LALT, KC_LSFT, CURSORLEFT, KC_SPC,  KC_SPC,  CURSORRGHT,  KC_RSFT, KC_0, KC_DOT                      \
+               KC_LGUI, KC_LALT, KC_LSFT, CURSORLEFT, KC_ESC,  KC_BSPC,  KC_SPC, KC_RSFT, KC_0, KC_DOT                    \
 )
 
 };
@@ -234,34 +207,19 @@ void keyboard_post_init_user(void) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   switch (keycode) {
-
-
      case NUMPAD:
       if (record->event.pressed) {
-	layer_invert(_QWERTY);
-	layer_invert(_NUMPAD);
+        layer_invert(_QWERTY);
+        layer_invert(_NUMPAD);
       }
       return false;
-      break;
-
-    case CURSORRGHT:
-      if (record->event.pressed) {
-        layer_on(_CURSORRGHT);
-        update_tri_layer(_CURSORRGHT, _CURSORLEFT, _NUMBERS);
-      } else {
-        layer_off(_CURSORRGHT);
-        update_tri_layer(_CURSORRGHT, _CURSORLEFT, _NUMBERS);
-       }
-      return true;// false;
       break;
 
     case CURSORLEFT:
       if (record->event.pressed) {
         layer_on(_CURSORLEFT);
-        update_tri_layer(_CURSORRGHT, _CURSORLEFT, _NUMBERS);
       } else {
         layer_off(_CURSORLEFT);
-        update_tri_layer(_CURSORRGHT, _CURSORLEFT, _NUMBERS);
       }
       return true;// 	false;
       break;
@@ -271,7 +229,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #ifdef AUDIO_ENABLE
           PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
         #endif
-        layer_off(_CURSORRGHT);
         layer_off(_CURSORLEFT);
         layer_off(_NUMBERS);
         layer_off(_EXTRARIGHT);
